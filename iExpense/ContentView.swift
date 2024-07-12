@@ -14,19 +14,36 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(expenses.items) { item in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(item.name)
-                                .font(.headline)
-                            Text(item.type)
+                Section("Personal") {
+                    ForEach(expenses.personalItems, id: \.id) { item in
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(item.name)
+                                    .font(.headline)
+                                Text(item.type)
+                            }
+                            
+                            Spacer()
+                            AmountText(amount: item.amount)
                         }
-                        
-                        Spacer()
-                        AmountText(amount: item.amount)
                     }
+                    .onDelete(perform: removePersonalItems)
                 }
-                .onDelete(perform: removeItems)
+                Section("Business") {
+                    ForEach(expenses.businessItems, id: \.id) { item in
+                        HStack {
+                            VStack(alignment: .leading) {
+                                Text(item.name)
+                                    .font(.headline)
+                                Text(item.type)
+                            }
+                            
+                            Spacer()
+                            AmountText(amount: item.amount)
+                        }
+                    }
+                    .onDelete(perform: removeBusinessItems)
+                }
             }
             .navigationTitle("iExpense")
             .toolbar {
@@ -40,10 +57,12 @@ struct ContentView: View {
         }
     }
     
+    func removeBusinessItems(at offsets: IndexSet) {
+        expenses.businessItems.remove(atOffsets: offsets)
+    }
     
-    
-    func removeItems(at offsets: IndexSet) {
-        expenses.items.remove(atOffsets: offsets)
+    func removePersonalItems(at offsets: IndexSet) {
+        expenses.personalItems.remove(atOffsets: offsets)
     }
 }
 
