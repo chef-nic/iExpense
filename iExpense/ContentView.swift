@@ -72,17 +72,18 @@ struct ContentView: View {
 
 struct AmountText: View {
     var amount: Double
+    let localCurrency = Locale.current.currency?.identifier ?? "USD"
     
     var body: some View {
         
         if amount < 10 {
-            Text(amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+            Text(amount, format: .currency(code: localCurrency))
                 .foregroundStyle(.green)
         } else if amount >= 10 && amount <= 20 {
-            Text(amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+            Text(amount, format: .currency(code: localCurrency))
                 .foregroundStyle(.yellow)
         } else {
-            Text(amount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+            Text(amount, format: .currency(code: localCurrency))
                 .foregroundStyle(.red)
         }
     }
